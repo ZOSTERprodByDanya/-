@@ -1,0 +1,39 @@
+import random
+import plotly.graph_objects as go
+import numpy as np
+
+def throw_dice(N):
+    return random.randint(1, N)
+
+def simulate_dice_rolls(N1, N2):
+    results = []
+    for _ in range(10000):
+        result1 = throw_dice(N1)
+        result2 = throw_dice(N2)
+        results.append(result1 + result2)
+    return results
+
+# Порядковий номер в журналі
+n = 10
+N1 = n + 3
+N2_symmetric = n + 3
+N2_asymmetric = n + 3
+
+# Симуляція кидання двох симетричних кубиків
+results_symmetric = simulate_dice_rolls(N1, N2_symmetric)
+
+# Симуляція кидання двох кубиків, один з яких асиметричний
+results_asymmetric = simulate_dice_rolls(N1, N2_asymmetric)
+
+---------------------------------------------------------------------------------------------
+# Побудова гістограми для суми результатів кидання двох симетричних кубиків
+fig_symmetric = go.Figure(data=[go.Histogram(x=results_symmetric, nbinsx=max(results_symmetric)-min(results_symmetric)+1)])
+fig_symmetric.update_layout(title_text='Симуляція кидання двох симетричних кубиків', xaxis_title_text='Сума результатів', yaxis_title_text='Кількість')
+
+# Побудова гістограми для суми результатів кидання двох кубиків, один з яких асиметричний
+fig_asymmetric = go.Figure(data=[go.Histogram(x=results_asymmetric, nbinsx=max(results_asymmetric)-min(results_asymmetric)+1)])
+fig_asymmetric.update_layout(title_text='Симуляція кидання двох кубиків, один з яких асиметричний', xaxis_title_text='Сума результатів', yaxis_title_text='Кількість')
+
+# Відображення гістограми у вигляді HTML-сторінки
+fig_symmetric.show(renderer="html")
+fig_asymmetric.show(renderer="html")
